@@ -27,8 +27,8 @@ class CreateShipmentTable extends Migration
                 'DESTROYED',
                 'UNKNOWN',
                 'IN FACILITY'
-            ]);
-            $table->foreignId('updated_by');
+            ])->default('UNKNOWN');
+            $table->foreignId('updated_by')->nullable();
 
             $table->index(['status', 'date_created']);
         });

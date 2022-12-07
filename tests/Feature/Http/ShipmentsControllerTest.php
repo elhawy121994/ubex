@@ -6,6 +6,7 @@ use Database\Seeders\DatabaseSeeder;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use Illuminate\Support\Facades\Cache;
 
 class ShipmentsControllerTest extends TestCase
 {
@@ -28,6 +29,9 @@ class ShipmentsControllerTest extends TestCase
         $response = $this->getJson("api/v1/shipments/statics?year={$year}&week={$week}");
         $response->assertStatus(202);
         $response->assertJson($responseData);
+        Cache::shouldReceive('put')
+            ->atLeast(2)
+            ->with("YEAR_2020_WEEK_6", $responseData, 24*60*60);
     }
 
     public function weekDataProvider(): array
@@ -183,5 +187,10 @@ class ShipmentsControllerTest extends TestCase
                 ]
             ]
         ];
+    }
+
+    public function testCacheWillDeletedIfShipmentChanged()
+    {
+        ///check cache data on week 12 update shipment on week 12 check cache should have no data
     }
 }

@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateShipmentRequest;
 use App\Http\Requests\ListShipmentRequest;
 use App\Services\Interfaces\ShipmentServiceInterface;
+use Illuminate\Http\JsonResponse;
 
 class ShipmentController extends BaseController
 {
@@ -15,10 +17,17 @@ class ShipmentController extends BaseController
         $this->shipmentService = $shipmentService;
     }
 
-    public function index(ListShipmentRequest $request)
+    public function store(CreateShipmentRequest $request)
+    {
+        $requestData = $request->validated();
+        $createdObject = $this->shipmentService->create($requestData);
+        return $this->created($createdObject);
+    }
+
+    public function statics(ListShipmentRequest $request): JsonResponse
     {
         $requestOption = $request->validated();
-        $shipments = $this->shipmentService->list($requestOption);
+        $shipments = $this->shipmentService->listStatics($requestOption);
         return $this->accepted($shipments);
     }
 }

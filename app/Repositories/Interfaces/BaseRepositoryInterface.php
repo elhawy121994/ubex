@@ -2,9 +2,13 @@
 
 namespace App\Repositories\Interfaces;
 
+use Illuminate\Pagination\LengthAwarePaginator;
+
 interface BaseRepositoryInterface {
 
     public function all();
+
+    public function paginate(): LengthAwarePaginator;
 
     public function create(array $data);
 

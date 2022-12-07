@@ -13,4 +13,7 @@ interface BaseServiceInterface
     public function show(int $id): Model;
 
     public function update(int $id, array $data): Model;
+
+    public function destroy(int $id): bool;
+
 }

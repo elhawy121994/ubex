@@ -22,12 +22,17 @@ class BaseService implements BaseServiceInterface
 
     public function list(array $requestOptions)
     {
-        return $this->repository->all();
+        return $this->repository->paginate();
     }
 
     public function show(int $id): Model
     {
         return $this->repository->getById($id);
+    }
+
+    public function destroy(int $id): bool
+    {
+        return $this->repository->deleteById($id);
     }
 
     public function update(int $id, array $data): Model

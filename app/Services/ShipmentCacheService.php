@@ -24,18 +24,24 @@ class ShipmentCacheService implements ShipmentCacheServiceInterface
 
     public function setStaticsPerWeek($data, int $week, int $year)
     {
-        $key = $this->getStaticsPerWeekKey($week, $year);
-        $this->put($key, $data, 60);
+        $key = $this->getStaticsKey($week, $year);
+        $this->put($key, $data, 24*60*60);
+    }
+
+    public function forgetStaticsPerWeek(int $week, int $year)
+    {
+        $key = $this->getStaticsKey($week, $year);
+        $this->destroy($key);
     }
 
     public function getStaticsPerWeek(int $week, int $year)
     {
-        $key = $this->getStaticsPerWeekKey($week, $year);
+        $key = $this->getStaticsKey($week, $year);
 
         return $this->get($key);
     }
 
-    private function getStaticsPerWeekKey(int $week, int $year)
+    private function getStaticsKey(int $week, int $year)
     {
         return 'YEAR_'. $year. '_WEEK_'.$week;
     }

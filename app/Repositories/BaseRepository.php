@@ -5,6 +5,7 @@ namespace App\Repositories;
 use Illuminate\Database\Eloquent\Collection;
 use App\Repositories\Interfaces\BaseRepositoryInterface;
 use \Illuminate\Database\Eloquent\Model;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 abstract class BaseRepository implements BaseRepositoryInterface
 {
@@ -91,6 +92,22 @@ abstract class BaseRepository implements BaseRepositoryInterface
         $this->newQuery()->eagerLoad();
 
         $models = $this->query->get();
+
+        $this->unsetClauses();
+
+        return $models;
+    }
+
+    /**
+     * Get all the specified model records in the database
+     *
+     * @return LengthAwarePaginator
+     */
+    public function paginate(): LengthAwarePaginator
+    {
+        $this->newQuery()->eagerLoad()->setClauses()->setScopes();
+
+        $models = $this->query->paginate($this->model->getPerPage() ?? 15);
 
         $this->unsetClauses();
 

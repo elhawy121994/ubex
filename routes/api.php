@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::controller(ShipmentController::class)->prefix('v1/shipments/')->group(function () {
-    Route::get('/statics', 'index');
+    Route::post('/', 'store');
+    Route::get('/statics', 'statics');
 });
 
